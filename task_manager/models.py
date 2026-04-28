@@ -28,3 +28,7 @@ class Task(models.Model):
                 name="created_at_gte_deadline"
             ),
         )
+
+    @property
+    def has_done(self) -> str:
+        return "Done" if self.completed else "Not done"
