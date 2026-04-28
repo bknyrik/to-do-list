@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models import Q, F, constraints
 
 
 class Tag(models.Model):
@@ -17,3 +18,13 @@ class Task(models.Model):
     deadline = models.DateTimeField(null=True)
     completed = models.BooleanField(default=False)
     tags = models.ManyToManyField(Tag, related_name="tasks")
+
+    class Meta:
+        ordering = ("-completed", "-created_at")
+        constraints = (
+            constraints.CheckConstraint(
+                condition=Q(deadline__is_null=False)
+                & Q(created_at__gte=F("deadline")),
+                name="created_at_gte_deadline"
+            ),
+        )
