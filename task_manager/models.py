@@ -1,5 +1,5 @@
 from django.db import models
-from django.db.models import Q, F, constraints
+from django.db.models import Q, F, constraints, functions
 from django.contrib.auth.models import AbstractUser
 from django.conf import settings
 
@@ -9,6 +9,12 @@ class Tag(models.Model):
 
     class Meta:
         ordering = ("name", )
+        constraints = (
+            constraints.CheckConstraint(
+                condition=Q(name=functions.Lower(F("name"))),
+                name="name_lower"
+            ),
+        )
 
     def __str__(self) -> str:
         return self.name
