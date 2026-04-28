@@ -1,5 +1,6 @@
 from django.db import models
 from django.db.models import Q, F, constraints
+from django.contrib.auth.models import AbstractUser
 
 
 class Tag(models.Model):
@@ -35,3 +36,7 @@ class Task(models.Model):
 
     def __str__(self) -> str:
         return f"{self.content} {self.created_at} {self.has_done}"
+
+
+class User(AbstractUser):
+    ...
