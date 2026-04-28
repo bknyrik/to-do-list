@@ -27,3 +27,17 @@ class ModelTests(TestCase):
             str(task),
             f"Test content {datetime.now()} {task.has_done}"
         )
+
+    def test_task_has_done(self) -> None:
+        task_1 = Task.objects.create(
+            content="Task has done",
+            completed=True,
+            user=self.user
+        )
+        task_2 = Task.objects.create(
+            content="Task hasn't done",
+            user=self.user
+        )
+
+        self.assertEqual(task_1.has_done, "Done")
+        self.assertEqual(task_2.has_done, "Not done")
