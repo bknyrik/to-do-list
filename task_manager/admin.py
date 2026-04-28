@@ -56,6 +56,11 @@ class TaskAdmin(admin.ModelAdmin):
         return ", ".join(map(str, task.tags.all()))
 
 
+class TaskInLine(admin.TabularInline):
+    model = Task
+    extra = 1
+
+
 @admin.register(get_user_model())
 class UserAdmin(DjangoUserAdmin):
     empty_value_display = "Absent"
@@ -68,6 +73,7 @@ class UserAdmin(DjangoUserAdmin):
             ),
         )
     )
+    inlines = (TaskInLine, )
 
 
 admin.site.register(Tag)
