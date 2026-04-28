@@ -3,6 +3,8 @@ from __future__ import annotations
 from django.http import HttpRequest
 from django.db.models import QuerySet
 from django.contrib import admin
+from django.contrib.auth import get_user_model
+from django.contrib.auth.admin import UserAdmin as DjangoUserAdmin
 from django.contrib.admin.filters import SimpleListFilter
 
 from task_manager.models import Tag, Task
@@ -52,6 +54,20 @@ class TaskAdmin(admin.ModelAdmin):
     @admin.display(description="Tags")
     def get_tags(self, task: Task) -> str:
         return ", ".join(map(str, task.tags.all()))
+
+
+@admin.register(get_user_model())
+class UserAdmin(DjangoUserAdmin):
+    empty_value_display = "Absent"
+    add_fieldsets = (
+        DjangoUserAdmin.add_fieldsets +
+        (
+            (
+                "Additional info",
+                {"fields": ("first_name", "last_name", "email")}
+            ),
+        )
+    )
 
 
 admin.site.register(Tag)
