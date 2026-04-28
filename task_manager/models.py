@@ -32,3 +32,6 @@ class Task(models.Model):
     @property
     def has_done(self) -> str:
         return "Done" if self.completed else "Not done"
+
+    def __str__(self) -> str:
+        return f"{self.content} {self.created_at} {self.has_done}"
