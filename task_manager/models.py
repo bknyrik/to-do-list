@@ -36,7 +36,8 @@ class Task(models.Model):
         ordering = ("-completed", "-created_at")
         constraints = (
             constraints.CheckConstraint(
-                condition=Q(deadline__isnull=False)
+                condition=Q(deadline__isnull=True)
+                | Q(deadline__isnull=False)
                 & Q(created_at__gte=F("deadline")),
                 name="created_at_gte_deadline"
             ),
