@@ -41,12 +41,17 @@ class TaskAdmin(admin.ModelAdmin):
         "created_at",
         "deadline",
         "get_status",
+        "get_tags",
     )
     list_filter = (HasDoneListFilter, )
 
     @admin.display(description="Status")
     def get_status(self, task: Task) -> str:
         return task.has_done
+
+    @admin.display(description="Tags")
+    def get_tags(self, task: Task) -> str:
+        return ", ".join(map(str, task.tags.all()))
 
 
 admin.site.register(Tag)
