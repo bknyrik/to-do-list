@@ -1,6 +1,7 @@
 from django.db import models
 from django.db.models import Q, F, constraints
 from django.contrib.auth.models import AbstractUser
+from django.conf import settings
 
 
 class Tag(models.Model):
@@ -19,6 +20,11 @@ class Task(models.Model):
     deadline = models.DateTimeField(null=True)
     completed = models.BooleanField(default=False)
     tags = models.ManyToManyField(Tag, related_name="tasks")
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        related_name="tasks",
+        on_delete=models.CASCADE
+    )
 
     class Meta:
         ordering = ("-completed", "-created_at")
