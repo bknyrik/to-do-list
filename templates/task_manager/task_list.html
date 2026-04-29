@@ -11,6 +11,12 @@
           <p class="fw-bold h5">
             {{ task.content }}
             <span class="{{ task.completed|yesno:"text-success,text-danger" }}">{{ task.has_done }}</span>
+            <form action="" method="post">
+              {% csrf_token %}
+              <input type="text" name="task_pk" value="{{ task.id }}" hidden>
+              <input class="btn {{ task.completed|yesno:"btn-secondary,btn-success" }} float-end" type="submit"
+                     value="{{ task.completed|yesno:"Undo,Complete" }}">
+            </form>
           </p>
           <p>
             Created: {{ task.created_at }}
