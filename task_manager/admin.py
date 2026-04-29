@@ -45,7 +45,7 @@ class TaskAdmin(admin.ModelAdmin):
         "get_status",
         "get_tags",
     )
-    list_filter = (HasDoneListFilter, "tags")
+    list_filter = (HasDoneListFilter,)
 
     @admin.display(description="Status")
     def get_status(self, task: Task) -> str:
