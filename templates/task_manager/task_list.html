@@ -1,6 +1,9 @@
 {% extends "base.html" %}
 {% block content %}
-  <h1>TODO list</h1>
+  <h1>
+    TODO list
+    <a class="btn btn-primary float-end" href="{% url "task_manager:task-create" %}">Add task</a>
+  </h1>
   {% if task_list %}
     <ul class="list-group list-group-flush">
       {% for task in task_list %}
