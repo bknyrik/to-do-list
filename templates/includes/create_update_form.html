@@ -8,5 +8,11 @@
   {% csrf_token %}
   {{ form|crispy }}
   <br>
-  <input class="btn btn-primary" type="submit" value="{{ object|yesno:"Update,Create" }}">
+  <input class="btn btn-primary" type="submit"
+      {% if not submit_text %}
+         value="{{ object|yesno:"Update,Create" }}"
+      {% else %}
+         value="{{ submit_text }}"
+      {% endif %}
+  >
 </form>
