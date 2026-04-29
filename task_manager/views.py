@@ -57,3 +57,8 @@ class UpdateUserView(generic.UpdateView):
 
     def get_success_url(self) -> str:
         return reverse("task_manger:user-detail", args=(self.object.id,))
+
+
+class DeleteUserView(generic.DeleteView):
+    model = get_user_model()
+    success_url = reverse_lazy("task_manager:task-list")
