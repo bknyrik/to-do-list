@@ -64,10 +64,6 @@ class TaskDeleteView(generic.DeleteView):
     success_url = reverse_lazy("task_manager:task-list")
 
 
-class UserDetailView(generic.DetailView):
-    model = get_user_model()
-
-
 class RegisterUserView(generic.CreateView):
     model = get_user_model()
     success_url = reverse_lazy("task_manager:task-list")
