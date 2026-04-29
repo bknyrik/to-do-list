@@ -1,5 +1,9 @@
 {% load crispy_forms_filters %}
-<h1>{{ object|yesno:"Update,Create" }} {{ object_type }}</h1>
+{% if h1 %}
+  <h1>{{ h1 }}</h1>
+{% else %}
+  <h1>{{ object|yesno:"Update,Create" }} {{ object_type }}</h1>
+{% endif %}
 <form action="" method="post">
   {% csrf_token %}
   {{ form|crispy }}
