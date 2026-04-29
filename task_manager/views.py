@@ -1,5 +1,6 @@
 from django.views import generic
 from django.urls import reverse_lazy
+from django.contrib.auth import get_user_model
 
 from task_manager.models import Tag, Task
 
@@ -40,3 +41,7 @@ class TaskUpdateView(generic.UpdateView):
 class TaskDeleteView(generic.DeleteView):
     model = Task
     success_url = reverse_lazy("task_manager:task-list")
+
+
+class UserDetailView(generic.DetailView):
+    model = get_user_model()
