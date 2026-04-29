@@ -21,6 +21,7 @@
           <p class="text-secondary h6">
             Tags: {{ task.tags.all|join:", " }}
             <a class="text-decoration-none" href="{% url "task_manager:task-update" pk=task.id %}">Update</a>
+            <a class="text-decoration-none" href="{% url "task_manager:task-delete" pk=task.id %}">Delete</a>
           </p>
         </li>
       {% endfor %}
