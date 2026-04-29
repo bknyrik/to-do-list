@@ -9,6 +9,7 @@ from task_manager.views import (
     TaskCreateView,
     TaskUpdateView,
     TaskDeleteView,
+    UserDetailView,
 )
 
 
@@ -21,6 +22,7 @@ urlpatterns = [
     path("tasks/create/", TaskCreateView.as_view(), name="task-create"),
     path("tasks/<int:pk>/update/", TaskUpdateView.as_view(), name="task-update"),
     path("tasks/<int:pk>/delete/", TaskDeleteView.as_view(), name="task-delete"),
+    path("users/<int:pk>/", UserDetailView.as_view(), name="user-detail"),
 ]
 
 app_name = "task_manager"
