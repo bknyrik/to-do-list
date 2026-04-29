@@ -33,7 +33,7 @@ class Task(models.Model):
     )
 
     class Meta:
-        ordering = ("-completed", "-created_at")
+        ordering = ("completed", "-created_at")
         constraints = (
             constraints.CheckConstraint(
                 condition=Q(created_at__lte=F("deadline")),
