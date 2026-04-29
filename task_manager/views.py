@@ -11,3 +11,8 @@ class TagListView(generic.ListView):
 class TagCreateView(generic.CreateView):
     model = Tag
     success_url = reverse_lazy("task_manager:tag-list")
+
+
+class TagUpdateView(generic.UpdateView):
+    model = Tag
+    success_url = reverse_lazy("task_manager:tag-list")
