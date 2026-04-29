@@ -1,3 +1,4 @@
+from django.http import HttpRequest, HttpResponseRedirect
 from django.views import generic
 from django.urls import reverse_lazy, reverse
 from django.contrib.auth import get_user_model
@@ -26,6 +27,21 @@ class TagDeleteView(generic.DeleteView):
 
 class TaskListView(generic.ListView):
     model = Task
+
+    def post(
+        self,
+        request: HttpRequest,
+        *args,
+        **kwargs
+    ) -> HttpResponseRedirect:
+        task_pk = request.POST.get("task_pk")
+
+        if task_pk:
+            task = Task.objects.get(pk=int(task_pk))
+            task.completed = not task.completed
+            task.save()
+
+        return HttpResponseRedirect(reverse("task_manager:task-list"), *args, **kwargs)
 
 
 class TaskCreateView(generic.CreateView):
