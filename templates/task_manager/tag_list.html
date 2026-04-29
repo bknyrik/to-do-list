@@ -1,6 +1,9 @@
 {% extends "base.html" %}
 {% block content %}
-  <h1>Tags</h1>
+  <h1>
+    Tags
+    <a class="btn btn-primary float-end" href="{% url "task_manager:tag-create" %}">Add</a>
+  </h1>
   {% if tag_list %}
     <table class="table">
       <thead>
