@@ -18,7 +18,7 @@
         <tr>
           <td>{{ tag }}</td>
           <td><a class="btn btn-secondary" href="{% url "task_manager:tag-update" pk=tag.id %}">Update</a></td>
-          <td>Delete</td>
+          <td><a class="btn btn-secondary" href="{% url "task_manager:tag-delete" pk=tag.id %}">Delete</a></td>
         </tr>
       {% endfor %}
       </tbody>
