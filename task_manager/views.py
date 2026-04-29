@@ -27,6 +27,7 @@ class TagDeleteView(generic.DeleteView):
 
 class TaskListView(generic.ListView):
     model = Task
+    queryset = Task.objects.prefetch_related("tags")
 
     def post(
         self,
