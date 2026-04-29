@@ -72,6 +72,7 @@ class RegisterUserView(generic.CreateView):
 
 class UpdateUserView(generic.UpdateView):
     model = get_user_model()
+    fields = ("username", "first_name", "last_name", "email")
 
     def get_success_url(self) -> str:
         return reverse("task_manger:user-detail", args=(self.object.id,))
