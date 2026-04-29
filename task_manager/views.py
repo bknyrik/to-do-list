@@ -30,11 +30,13 @@ class TaskListView(generic.ListView):
 
 class TaskCreateView(generic.CreateView):
     model = Task
+    fields = "__all__"
     success_url = reverse_lazy("task_manager:task-list")
 
 
 class TaskUpdateView(generic.UpdateView):
     model = Task
+    fields = "__all__"
     success_url = reverse_lazy("task_manager:task-list")
 
 
