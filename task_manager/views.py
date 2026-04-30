@@ -3,27 +3,28 @@ from django.views import generic
 from django.urls import reverse_lazy, reverse
 from django.contrib.auth import get_user_model
 from django.db.models import QuerySet
+from django.contrib.auth import mixins
 
 from task_manager.models import Tag, Task
 
 
-class TagListView(generic.ListView):
+class TagListView(mixins.LoginRequiredMixin, generic.ListView):
     model = Tag
 
 
-class TagCreateView(generic.CreateView):
-    model = Tag
-    fields = "__all__"
-    success_url = reverse_lazy("task_manager:tag-list")
-
-
-class TagUpdateView(generic.UpdateView):
+class TagCreateView(mixins.LoginRequiredMixin, generic.CreateView):
     model = Tag
     fields = "__all__"
     success_url = reverse_lazy("task_manager:tag-list")
 
 
-class TagDeleteView(generic.DeleteView):
+class TagUpdateView(mixins.LoginRequiredMixin, generic.UpdateView):
+    model = Tag
+    fields = "__all__"
+    success_url = reverse_lazy("task_manager:tag-list")
+
+
+class TagDeleteView(mixins.LoginRequiredMixin, generic.DeleteView):
     model = Tag
     success_url = reverse_lazy("task_manager:tag-list")
 
