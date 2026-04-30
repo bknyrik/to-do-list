@@ -28,3 +28,9 @@ class UserChangeForm(DjangoUserChangeForm):
     class Meta:
         model = get_user_model()
         fields = ("username", "first_name", "last_name", "email")
+
+
+class StaffChangeForm(DjangoUserChangeForm):
+    class Meta:
+        model = get_user_model()
+        fields = "__all__"
