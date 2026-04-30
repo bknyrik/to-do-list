@@ -17,6 +17,7 @@ from task_manager.forms import (
 
 class TagListView(mixins.LoginRequiredMixin, generic.ListView):
     model = Tag
+    paginate_by = 10
 
 
 class TagCreateView(mixins.LoginRequiredMixin, generic.CreateView):
@@ -39,6 +40,7 @@ class TagDeleteView(mixins.LoginRequiredMixin, generic.DeleteView):
 class TaskListView(mixins.LoginRequiredMixin, generic.ListView):
     model = Task
     queryset = Task.objects.prefetch_related("tags")
+    paginate_by = 5
 
     def get_queryset(self) -> QuerySet[Task]:
         return self.queryset.filter(user=self.request.user)
@@ -82,6 +84,7 @@ class UserListView(
     generic.ListView
 ):
     model = get_user_model()
+    paginate_by = 10
 
     def has_permission(self) -> bool:
         return self.request.user.is_staff
