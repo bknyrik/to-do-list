@@ -75,7 +75,7 @@ class RegisterUserView(generic.CreateView):
     success_url = reverse_lazy("task_manager:task-list")
 
 
-class UpdateUserView(generic.UpdateView):
+class UpdateUserView(mixins.LoginRequiredMixin, generic.UpdateView):
     model = get_user_model()
     fields = ("username", "first_name", "last_name", "email")
 
@@ -83,6 +83,6 @@ class UpdateUserView(generic.UpdateView):
         return reverse("task_manger:user-detail", args=(self.object.id,))
 
 
-class DeleteUserView(generic.DeleteView):
+class DeleteUserView(mixins.LoginRequiredMixin, generic.DeleteView):
     model = get_user_model()
     success_url = reverse_lazy("task_manager:task-list")
