@@ -5,4 +5,22 @@
   <li class="list-group-item">
     <a class="text-decoration-none" href="{% url "task_manager:tag-list" %}">Tags</a>
   </li>
+  {% if user.is_authenticated %}
+    <li class="list-group-item">
+      <a class="text-decoration-none" href="{% url "task_manager:user-update" pk=user.id %}">Account</a>
+    </li>
+    <li class="list-group-item bg-primary">
+      <form action="{% url "logout" %}" method="post">
+        {% csrf_token %}
+        <input class="link-light text-decoration-none border-0 bg-primary" type="submit" value="Log out">
+      </form>
+    </li>
+  {% else %}
+    <li class="list-group-item bg-primary">
+      <a class="text-light text-decoration-none" href="{% url "task_manager:user-create" %}">Sign up</a>
+    </li>
+    <li class="list-group-item bg-primary">
+      <a class="text-light text-decoration-none" href="{% url "login" %}">Log in</a>
+    </li>
+  {% endif %}
 </ul>
