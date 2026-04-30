@@ -82,9 +82,19 @@ class RegisterUserView(mixins.PermissionRequiredMixin, generic.CreateView):
         return self.request.user.is_staff or self.request.user.is_anonymous
 
 
-class UpdateUserView(mixins.LoginRequiredMixin, generic.UpdateView):
+class UpdateUserView(
+    mixins.LoginRequiredMixin,
+    mixins.PermissionRequiredMixin,
+    generic.UpdateView
+):
     model = get_user_model()
     fields = ("username", "first_name", "last_name", "email")
+
+    def has_permission(self) -> bool:
+        return (
+            self.request.user.is_staff or
+            self.request.user.id == self.get_object().id
+        )
 
     def get_success_url(self) -> str:
         return reverse("task_manger:user-detail", args=(self.object.id,))
