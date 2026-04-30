@@ -4,8 +4,10 @@ from django.urls import reverse_lazy, reverse
 from django.contrib.auth import get_user_model
 from django.db.models import QuerySet
 from django.contrib.auth import mixins
+from django.contrib.auth.forms import BaseUserCreationForm
 
 from task_manager.models import Tag, Task
+from task_manager.forms import RegisterUserForm, UserCreationForm
 
 
 class TagListView(mixins.LoginRequiredMixin, generic.ListView):
@@ -71,8 +73,13 @@ class TaskDeleteView(mixins.LoginRequiredMixin, generic.DeleteView):
 
 class RegisterUserView(mixins.PermissionRequiredMixin, generic.CreateView):
     model = get_user_model()
-    fields = ("username", "first_name", "last_name", "email", "password")
     success_url = reverse_lazy("task_manager:task-list")
+
+    def get_form_class(self) -> type[BaseUserCreationForm]:
+        if self.request.user.is_anonymous:
+            return RegisterUserForm
+
+        return UserCreationForm
 
     def has_permission(self) -> bool:
         return self.request.user.is_staff or self.request.user.is_anonymous
