@@ -121,7 +121,7 @@ class UserUpdateView(
         )
 
     def get_success_url(self) -> str:
-        return reverse("task_manger:user-detail", args=(self.object.id,))
+        return reverse("task_manager:user-update", args=(self.object.id,))
 
 
 class UserDeleteView(
