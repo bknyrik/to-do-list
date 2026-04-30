@@ -7,7 +7,12 @@ from django.contrib.auth import mixins
 from django.contrib.auth.forms import BaseUserCreationForm
 
 from task_manager.models import Tag, Task
-from task_manager.forms import RegisterUserForm, UserCreationForm
+from task_manager.forms import (
+    RegisterUserForm,
+    UserCreationForm,
+    StaffChangeForm,
+    UserChangeForm
+)
 
 
 class TagListView(mixins.LoginRequiredMixin, generic.ListView):
@@ -91,7 +96,12 @@ class UpdateUserView(
     generic.UpdateView
 ):
     model = get_user_model()
-    fields = ("username", "first_name", "last_name", "email")
+
+    def get_form_class(self) -> type:
+        if self.request.user.is_authenticated and self.request.user.is_staff:
+            return StaffChangeForm
+
+        return UserChangeForm
 
     def has_permission(self) -> bool:
         return (
