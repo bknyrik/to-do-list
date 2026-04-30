@@ -1,3 +1,7 @@
+from typing import Sequence
+
+from django.contrib.auth.base_user import AbstractBaseUser
+from django.contrib.auth.models import PermissionsMixin
 from django.http import HttpRequest, HttpResponseRedirect
 from django.views import generic
 from django.urls import reverse_lazy, reverse
@@ -69,10 +73,13 @@ class TaskDeleteView(mixins.LoginRequiredMixin, generic.DeleteView):
     success_url = reverse_lazy("task_manager:task-list")
 
 
-class RegisterUserView(generic.CreateView):
+class RegisterUserView(mixins.PermissionRequiredMixin, generic.CreateView):
     model = get_user_model()
     fields = ("username", "first_name", "last_name", "email", "password")
     success_url = reverse_lazy("task_manager:task-list")
+
+    def has_permission(self) -> bool:
+        return self.request.user.is_staff or self.request.user.is_anonymous
 
 
 class UpdateUserView(mixins.LoginRequiredMixin, generic.UpdateView):
