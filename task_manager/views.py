@@ -76,6 +76,17 @@ class TaskDeleteView(mixins.LoginRequiredMixin, generic.DeleteView):
     success_url = reverse_lazy("task_manager:task-list")
 
 
+class UserListView(
+    mixins.LoginRequiredMixin,
+    mixins.PermissionRequiredMixin,
+    generic.ListView
+):
+    model = get_user_model()
+
+    def has_permission(self) -> bool:
+        return self.request.user.is_staff
+
+
 class RegisterUserView(mixins.PermissionRequiredMixin, generic.CreateView):
     model = get_user_model()
     success_url = reverse_lazy("task_manager:task-list")
