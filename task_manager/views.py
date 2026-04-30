@@ -90,7 +90,7 @@ class RegisterUserView(mixins.PermissionRequiredMixin, generic.CreateView):
         return self.request.user.is_staff or self.request.user.is_anonymous
 
 
-class UpdateUserView(
+class UserUpdateView(
     mixins.LoginRequiredMixin,
     mixins.PermissionRequiredMixin,
     generic.UpdateView
@@ -113,7 +113,7 @@ class UpdateUserView(
         return reverse("task_manger:user-detail", args=(self.object.id,))
 
 
-class DeleteUserView(
+class UserDeleteView(
     mixins.LoginRequiredMixin,
     mixins.PermissionRequiredMixin,
     generic.DeleteView
