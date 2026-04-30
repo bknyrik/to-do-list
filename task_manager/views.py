@@ -29,7 +29,7 @@ class TagDeleteView(mixins.LoginRequiredMixin, generic.DeleteView):
     success_url = reverse_lazy("task_manager:tag-list")
 
 
-class TaskListView(generic.ListView):
+class TaskListView(mixins.LoginRequiredMixin, generic.ListView):
     model = Task
     queryset = Task.objects.prefetch_related("tags")
 
@@ -52,19 +52,19 @@ class TaskListView(generic.ListView):
         return HttpResponseRedirect(reverse("task_manager:task-list"), *args, **kwargs)
 
 
-class TaskCreateView(generic.CreateView):
+class TaskCreateView(mixins.LoginRequiredMixin, generic.CreateView):
     model = Task
     fields = "__all__"
     success_url = reverse_lazy("task_manager:task-list")
 
 
-class TaskUpdateView(generic.UpdateView):
+class TaskUpdateView(mixins.LoginRequiredMixin, generic.UpdateView):
     model = Task
     fields = "__all__"
     success_url = reverse_lazy("task_manager:task-list")
 
 
-class TaskDeleteView(generic.DeleteView):
+class TaskDeleteView(mixins.LoginRequiredMixin, generic.DeleteView):
     model = Task
     success_url = reverse_lazy("task_manager:task-list")
 
