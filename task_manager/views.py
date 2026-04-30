@@ -100,6 +100,16 @@ class UpdateUserView(
         return reverse("task_manger:user-detail", args=(self.object.id,))
 
 
-class DeleteUserView(mixins.LoginRequiredMixin, generic.DeleteView):
+class DeleteUserView(
+    mixins.LoginRequiredMixin,
+    mixins.PermissionRequiredMixin,
+    generic.DeleteView
+):
     model = get_user_model()
     success_url = reverse_lazy("task_manager:task-list")
+
+    def has_permission(self) -> bool:
+        return (
+            self.request.user.is_staff or
+            self.request.user.id == self.get_object().id
+        )
