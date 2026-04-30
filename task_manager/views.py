@@ -2,6 +2,7 @@ from django.http import HttpRequest, HttpResponseRedirect
 from django.views import generic
 from django.urls import reverse_lazy, reverse
 from django.contrib.auth import get_user_model
+from django.db.models import QuerySet
 
 from task_manager.models import Tag, Task
 
@@ -30,6 +31,9 @@ class TagDeleteView(generic.DeleteView):
 class TaskListView(generic.ListView):
     model = Task
     queryset = Task.objects.prefetch_related("tags")
+
+    def get_queryset(self) -> QuerySet[Task]:
+        return self.queryset.filter(user=self.request.user)
 
     def post(
         self,
