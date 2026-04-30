@@ -13,3 +13,9 @@ class RegisterUserForm(BaseUserCreationForm):
             "password1",
             "password2",
         )
+
+
+class UserCreationForm(BaseUserCreationForm):
+    class Meta:
+        model = get_user_model()
+        fields = "__all__"
