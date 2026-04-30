@@ -1,7 +1,3 @@
-from typing import Sequence
-
-from django.contrib.auth.base_user import AbstractBaseUser
-from django.contrib.auth.models import PermissionsMixin
 from django.http import HttpRequest, HttpResponseRedirect
 from django.views import generic
 from django.urls import reverse_lazy, reverse
