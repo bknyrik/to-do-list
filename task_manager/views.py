@@ -21,21 +21,42 @@ class TagListView(mixins.LoginRequiredMixin, generic.ListView):
     paginate_by = 10
 
 
-class TagCreateView(mixins.LoginRequiredMixin, generic.CreateView):
+class TagCreateView(
+    mixins.LoginRequiredMixin,
+    mixins.PermissionRequiredMixin,
+    generic.CreateView
+):
     model = Tag
     form_class = TagForm
     success_url = reverse_lazy("task_manager:tag-list")
 
+    def has_permission(self) -> bool:
+        return self.request.user.is_staff
 
-class TagUpdateView(mixins.LoginRequiredMixin, generic.UpdateView):
+
+class TagUpdateView(
+    mixins.LoginRequiredMixin,
+    mixins.PermissionRequiredMixin,
+    generic.CreateView
+):
     model = Tag
     form_class = TagForm
     success_url = reverse_lazy("task_manager:tag-list")
 
+    def has_permission(self) -> bool:
+        return self.request.user.is_staff
 
-class TagDeleteView(mixins.LoginRequiredMixin, generic.DeleteView):
+
+class TagDeleteView(
+    mixins.LoginRequiredMixin,
+    mixins.PermissionRequiredMixin,
+    generic.CreateView
+):
     model = Tag
     success_url = reverse_lazy("task_manager:tag-list")
+
+    def has_permission(self) -> bool:
+        return self.request.user.is_staff
 
 
 class TaskListView(mixins.LoginRequiredMixin, generic.ListView):
