@@ -10,7 +10,7 @@ from task_manager.models import Tag, Task
 from task_manager.forms import (
     TagForm,
     TaskForm,
-    RegisterUserForm,
+    UserRegistrationForm,
     UserCreationForm,
     StaffChangeForm,
     UserChangeForm
@@ -106,7 +106,7 @@ class RegisterUserView(mixins.PermissionRequiredMixin, generic.CreateView):
 
     def get_form_class(self) -> type[BaseUserCreationForm]:
         if self.request.user.is_anonymous:
-            return RegisterUserForm
+            return UserRegistrationForm
 
         return UserCreationForm
 

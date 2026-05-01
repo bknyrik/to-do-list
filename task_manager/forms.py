@@ -44,7 +44,7 @@ class TaskForm(forms.ModelForm):
         return deadline
 
 
-class RegisterUserForm(DjangoUserCreationForm):
+class UserRegistrationForm(DjangoUserCreationForm):
     class Meta:
         model = get_user_model()
         fields = (
