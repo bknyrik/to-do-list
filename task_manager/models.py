@@ -48,6 +48,7 @@ class Task(models.Model):
         related_name="tasks",
         on_delete=models.CASCADE
     )
+    slug = models.SlugField(default="", null=False)
 
     class Meta:
         ordering = ("completed", "-created_at")
@@ -61,6 +62,22 @@ class Task(models.Model):
     @property
     def has_done(self) -> str:
         return "Done" if self.completed else "Not done"
+
+    def save(
+        self,
+        *,
+        force_insert = False,
+        force_update = False,
+        using = None,
+        update_fields = None,
+    ) -> None:
+        self.slug = self.content.strip().replace("", "-").lower()
+        super().save(
+            force_insert=force_insert,
+            force_update=force_update,
+            using=using,
+            update_fields=update_fields
+        )
 
     def __str__(self) -> str:
         return f"{self.content} {self.created_at} {self.has_done}"
