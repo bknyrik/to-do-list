@@ -4,7 +4,6 @@ from django.urls import reverse_lazy, reverse
 from django.contrib.auth import get_user_model
 from django.db.models import QuerySet
 from django.contrib.auth import mixins
-from django.contrib.auth.forms import BaseUserCreationForm
 
 from task_manager.models import Tag, Task
 from task_manager.forms import (
@@ -104,7 +103,9 @@ class UserCreateView(mixins.PermissionRequiredMixin, generic.CreateView):
     model = get_user_model()
     success_url = reverse_lazy("task_manager:task-list")
 
-    def get_form_class(self) -> type[BaseUserCreationForm]:
+    def get_form_class(
+        self
+    ) -> type[UserRegistrationForm | UserCreationForm]:
         if self.request.user.is_anonymous:
             return UserRegistrationForm
 
