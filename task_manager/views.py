@@ -8,6 +8,7 @@ from django.contrib.auth.forms import BaseUserCreationForm
 
 from task_manager.models import Tag, Task
 from task_manager.forms import (
+    TagForm,
     TaskForm,
     RegisterUserForm,
     UserCreationForm,
@@ -23,13 +24,13 @@ class TagListView(mixins.LoginRequiredMixin, generic.ListView):
 
 class TagCreateView(mixins.LoginRequiredMixin, generic.CreateView):
     model = Tag
-    fields = "__all__"
+    form_class = TagForm
     success_url = reverse_lazy("task_manager:tag-list")
 
 
 class TagUpdateView(mixins.LoginRequiredMixin, generic.UpdateView):
     model = Tag
-    fields = "__all__"
+    form_class = TagForm
     success_url = reverse_lazy("task_manager:tag-list")
 
 
