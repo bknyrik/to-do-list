@@ -1,4 +1,4 @@
-from django.http import HttpRequest, HttpResponseRedirect
+from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
 from django.views import generic
 from django.urls import reverse_lazy, reverse
 from django.contrib.auth import get_user_model
@@ -8,6 +8,7 @@ from django.contrib.auth.forms import BaseUserCreationForm
 
 from task_manager.models import Tag, Task
 from task_manager.forms import (
+    TaskForm,
     RegisterUserForm,
     UserCreationForm,
     StaffChangeForm,
@@ -63,8 +64,12 @@ class TaskListView(mixins.LoginRequiredMixin, generic.ListView):
 
 class TaskCreateView(mixins.LoginRequiredMixin, generic.CreateView):
     model = Task
-    fields = "__all__"
+    form_class = TaskForm
     success_url = reverse_lazy("task_manager:task-list")
+
+    def form_valid(self, form: TaskForm) -> HttpResponse:
+        form.instance.user = self.request.user
+        return super().form_valid(form)
 
 
 class TaskUpdateView(mixins.LoginRequiredMixin, generic.UpdateView):
