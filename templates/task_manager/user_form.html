@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
-  {% if user.is_staff %}
+  {% if request.user.is_staff %}
     {% include "includes/create_update_form.html" with object_type="user" %}
   {% elif not object %}
     {% include "includes/create_update_form.html" with h1="Registration" submit_text="Register" %}
