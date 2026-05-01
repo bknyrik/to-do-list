@@ -1,6 +1,8 @@
 from datetime import datetime
 
-from django.contrib.auth.forms import BaseUserCreationForm
+from django.contrib.auth.forms import (
+    UserCreationForm as DjangoUserCreationForm
+)
 from django import forms
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
@@ -42,7 +44,7 @@ class TaskForm(forms.ModelForm):
         return deadline
 
 
-class RegisterUserForm(BaseUserCreationForm):
+class RegisterUserForm(DjangoUserCreationForm):
     class Meta:
         model = get_user_model()
         fields = (
@@ -55,7 +57,7 @@ class RegisterUserForm(BaseUserCreationForm):
         )
 
 
-class UserCreationForm(BaseUserCreationForm):
+class UserCreationForm(DjangoUserCreationForm):
     class Meta:
         model = get_user_model()
         fields = "__all__"
