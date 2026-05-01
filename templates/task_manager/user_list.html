@@ -19,7 +19,7 @@
         <tr>
           <td>
             <a class="text-decoration-none"
-               href="{% url "task_manager:user-update" pk=user.id %}">{{ user.username }}</a>
+               href="{% url "task_manager:user-update" slug=user.slug %}">{{ user.username }}</a>
           </td>
           <td>{{ user.first_name|default:"Absent" }}</td>
           <td>{{ user.last_name|default:"Absent" }}</td>
