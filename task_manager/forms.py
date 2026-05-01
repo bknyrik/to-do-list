@@ -83,4 +83,13 @@ class UserChangeForm(forms.ModelForm):
 class StaffChangeForm(forms.ModelForm):
     class Meta:
         model = get_user_model()
-        fields = "__all__"
+        fields = (
+            "username",
+            "first_name",
+            "last_name",
+            "email",
+            "is_superuser",
+            "is_staff",
+            "groups",
+            "user_permissions",
+        )
