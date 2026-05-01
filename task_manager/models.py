@@ -6,6 +6,7 @@ from django.conf import settings
 
 class Tag(models.Model):
     name = models.CharField(max_length=32, unique=True)
+    slug = models.SlugField(default="", null=False)
 
     class Meta:
         ordering = ("name", )
@@ -18,6 +19,22 @@ class Tag(models.Model):
 
     def __str__(self) -> str:
         return self.name
+
+    def save(
+        self,
+        *,
+        force_insert = False,
+        force_update = False,
+        using = None,
+        update_fields = None,
+    ) -> None:
+        self.slug = self.name
+        super().save(
+            force_insert=force_insert,
+            force_update=force_update,
+            using=using,
+            update_fields=update_fields
+        )
 
 
 class Task(models.Model):
