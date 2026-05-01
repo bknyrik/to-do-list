@@ -84,4 +84,20 @@ class Task(models.Model):
 
 
 class User(AbstractUser):
-    ...
+    slug = models.SlugField(default="", null=False)
+
+    def save(
+        self,
+        *,
+        force_insert=False,
+        force_update=False,
+        using=None,
+        update_fields=None
+    ) -> None:
+        self.slug = self.username
+        super().save(
+            force_insert=force_insert,
+            force_update=force_update,
+            using=using,
+            update_fields=update_fields
+        )
