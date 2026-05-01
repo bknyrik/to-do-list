@@ -1,6 +1,9 @@
+from datetime import datetime
+
 from django.contrib.auth.forms import BaseUserCreationForm
 from django import forms
 from django.contrib.auth import get_user_model
+from django.core.exceptions import ValidationError
 
 from task_manager.models import Task
 
@@ -15,6 +18,14 @@ class TaskForm(forms.ModelForm):
     class Meta:
         model = Task
         fields = ("content", "deadline", "tags")
+
+    def clean_deadline(self) -> datetime:
+        deadline = self.cleaned_data.get("deadline")
+
+        if deadline and self.instance.created_at > deadline:
+            raise ValidationError("Deadline mustn't have past date and time")
+
+        return deadline
 
 
 class RegisterUserForm(BaseUserCreationForm):
