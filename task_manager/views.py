@@ -74,8 +74,12 @@ class TaskCreateView(mixins.LoginRequiredMixin, generic.CreateView):
 
 class TaskUpdateView(mixins.LoginRequiredMixin, generic.UpdateView):
     model = Task
-    fields = "__all__"
+    form_class = TaskForm
     success_url = reverse_lazy("task_manager:task-list")
+
+    def form_valid(self, form: TaskForm) -> HttpResponse:
+        form.instance.user = self.request.user
+        return super().form_valid(form)
 
 
 class TaskDeleteView(mixins.LoginRequiredMixin, generic.DeleteView):
