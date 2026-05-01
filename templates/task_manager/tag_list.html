@@ -2,28 +2,34 @@
 {% block content %}
   <h1>
     Tags
-    <a class="btn btn-primary float-end" href="{% url "task_manager:tag-create" %}">Add</a>
+    {% if user.is_staff %}
+      <a class="btn btn-primary float-end" href="{% url "task_manager:tag-create" %}">Add</a>
+    {% endif %}
   </h1>
   {% if tag_list %}
     <table class="table">
       <thead>
       <tr>
         <th scope="col" class="border-top border-bottom">Name</th>
-        <th scope="col" class="border-top border-bottom">Update</th>
-        <th scope="col" class="border-top border-bottom">Delete</th>
+        {% if user.is_staff %}
+          <th scope="col" class="border-top border-bottom">Update</th>
+          <th scope="col" class="border-top border-bottom">Delete</th>
+        {% endif %}
       </tr>
       </thead>
       <tbody>
       {% for tag in tag_list %}
         <tr>
           <td>{{ tag }}</td>
-          <td><a class="btn btn-secondary" href="{% url "task_manager:tag-update" slug=tag.slug %}">Update</a></td>
-          <td><a class="btn btn-secondary" href="{% url "task_manager:tag-delete" slug=tag.slug %}">Delete</a></td>
+          {% if user.is_staff %}
+            <td><a class="btn btn-secondary" href="{% url "task_manager:tag-update" slug=tag.slug %}">Update</a></td>
+            <td><a class="btn btn-secondary" href="{% url "task_manager:tag-delete" slug=tag.slug %}">Delete</a></td>
+          {% endif %}
         </tr>
       {% endfor %}
       </tbody>
     </table>
-    {% else %}
-      <p>There are no any tags.</p>
+  {% else %}
+    <p>There are no any tags.</p>
   {% endif %}
 {% endblock %}
