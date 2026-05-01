@@ -100,7 +100,7 @@ class UserListView(
         return self.request.user.is_staff
 
 
-class RegisterUserView(mixins.PermissionRequiredMixin, generic.CreateView):
+class UserCreateView(mixins.PermissionRequiredMixin, generic.CreateView):
     model = get_user_model()
     success_url = reverse_lazy("task_manager:task-list")
 
