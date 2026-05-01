@@ -8,16 +8,16 @@
     <ul class="list-group list-group-flush">
       {% for task in task_list %}
         <li class="list-group-item">
-          <p class="fw-bold h5">
-            {{ task.content }}
-            <span class="{{ task.completed|yesno:"text-success,text-danger" }}">{{ task.has_done }}</span>
-            <form action="" method="post">
-              {% csrf_token %}
+          <form action="" method="post">
+            {% csrf_token %}
+            <p class="fw-bold h5">
+              {{ task.content }}
+              <span class="{{ task.completed|yesno:"text-success,text-danger" }}">{{ task.has_done }}</span>
               <input type="text" name="task_pk" value="{{ task.id }}" hidden>
               <input class="btn {{ task.completed|yesno:"btn-secondary,btn-success" }} float-end" type="submit"
                      value="{{ task.completed|yesno:"Undo,Complete" }}">
-            </form>
-          </p>
+            </p>
+          </form>
           <p>
             Created: {{ task.created_at }}
             {% if task.deadline %}
@@ -32,7 +32,7 @@
         </li>
       {% endfor %}
     </ul>
-    {% else %}
-      <p>There are no any tasks.</p>
+  {% else %}
+    <p>There are no any tasks.</p>
   {% endif %}
 {% endblock %}
