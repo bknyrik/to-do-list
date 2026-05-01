@@ -71,7 +71,7 @@ class Task(models.Model):
         using = None,
         update_fields = None,
     ) -> None:
-        self.slug = self.content.strip().replace("", "-").lower()
+        self.slug = self.content.strip().replace(" ", "-").lower()
         super().save(
             force_insert=force_insert,
             force_update=force_update,
