@@ -13,7 +13,7 @@
     {% endif %}
     <li class="list-group-item">
       <a class="text-decoration-none"
-         href="{% url "task_manager:user-update" pk=request.user.id %}">{{ request.user.username }}</a>
+         href="{% url "task_manager:user-update" slug=request.user.slug %}">{{ request.user.username }}</a>
     </li>
     <li class="list-group-item bg-primary">
       <form action="{% url "logout" %}" method="post">
