@@ -26,7 +26,7 @@ urlpatterns = [
     path("tasks/<int:pk>/update/", TaskUpdateView.as_view(), name="task-update"),
     path("tasks/<int:pk>/delete/", TaskDeleteView.as_view(), name="task-delete"),
     path("users/", UserListView.as_view(), name="user-list"),
-    path("users/register/", UserCreateView.as_view(), name="user-create"),
+    path("users/create/", UserCreateView.as_view(), name="user-create"),
     path("users/<int:pk>/update/", UserUpdateView.as_view(), name="user-update"),
     path("users/<int:pk>/delete/", UserDeleteView.as_view(), name="user-delete"),
 ]
