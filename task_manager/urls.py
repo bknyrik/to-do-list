@@ -19,8 +19,8 @@ from task_manager.views import (
 urlpatterns = [
     path("tags/", TagListView.as_view(), name="tag-list"),
     path("tags/create/", TagCreateView.as_view(), name="tag-create"),
-    path("tags/<int:pk>/update/", TagUpdateView.as_view(), name="tag-update"),
-    path("tags/<int:pk>/delete/", TagDeleteView.as_view(), name="tag-delete"),
+    path("tags/<slug:slug>/update/", TagUpdateView.as_view(), name="tag-update"),
+    path("tags/<slug:slug>/delete/", TagDeleteView.as_view(), name="tag-delete"),
     path("", TaskListView.as_view(), name="task-list"),
     path("tasks/create/", TaskCreateView.as_view(), name="task-create"),
     path("tasks/<int:pk>/update/", TaskUpdateView.as_view(), name="task-update"),
