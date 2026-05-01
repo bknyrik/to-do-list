@@ -1,6 +1,7 @@
 {% load crispy_forms_filters %}
 <h1>Delete {{ object_type }} {{ object_name }}?</h1>
 <form action="" method="post">
+  {% csrf_token %}
   {{ form|crispy }}
   <br>
   <input class="btn btn-danger" type="submit" value="Delete">
