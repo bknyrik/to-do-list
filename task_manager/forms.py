@@ -5,7 +5,21 @@ from django import forms
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
 
-from task_manager.models import Task
+from task_manager.models import Task, Tag
+
+
+class TagForm(forms.ModelForm):
+    class Meta:
+        model = Tag
+        fields = "__all__"
+
+    def clean_name(self) -> str:
+        name = self.cleaned_data["name"]
+
+        if name != name.lower():
+            raise ValidationError("Name must contain only lower letters")
+
+        return name
 
 
 class TaskForm(forms.ModelForm):
