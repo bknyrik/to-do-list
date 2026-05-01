@@ -60,7 +60,18 @@ class UserRegistrationForm(DjangoUserCreationForm):
 class UserCreationForm(DjangoUserCreationForm):
     class Meta:
         model = get_user_model()
-        fields = "__all__"
+        fields = (
+            "username",
+            "first_name",
+            "last_name",
+            "email",
+            "password1",
+            "password2",
+            "is_superuser",
+            "is_staff",
+            "groups",
+            "user_permissions",
+        )
 
 
 class UserChangeForm(forms.ModelForm):
