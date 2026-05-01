@@ -13,7 +13,7 @@ from task_manager.models import Task, Tag
 class TagForm(forms.ModelForm):
     class Meta:
         model = Tag
-        fields = "__all__"
+        fields = ("name", )
 
     def clean_name(self) -> str:
         name = self.cleaned_data["name"]
