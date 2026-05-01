@@ -4,6 +4,7 @@ from django.urls import reverse_lazy, reverse
 from django.contrib.auth import get_user_model
 from django.db.models import QuerySet
 from django.contrib.auth import mixins
+from django.contrib.auth import login
 
 from task_manager.models import Tag, Task
 from task_manager.forms import (
@@ -122,7 +123,12 @@ class UserListView(
 
 class UserCreateView(mixins.PermissionRequiredMixin, generic.CreateView):
     model = get_user_model()
-    success_url = reverse_lazy("task_manager:task-list")
+
+    def get_success_url(self) -> str:
+        if self.request.user.is_anonymous:
+            login(request=self.request, user=self.object)
+
+        return reverse("task_manager:task-list")
 
     def get_form_class(
         self
