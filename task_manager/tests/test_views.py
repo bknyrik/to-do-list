@@ -6,10 +6,14 @@ from task_manager.models import Tag
 
 
 HTTP_200_OK = 200
-HTTP_403_OK = 403
+HTTP_403_FORBIDDEN = 403
 
 TAG_LIST_URL = reverse("task_manager:tag-list")
 TAG_CREATE_URL = reverse("task_manager:tag-create")
+TAG_UPDATE_URL = reverse(
+    "task_manager:tag-update",
+    kwargs={"slug": "test_tag"}
+)
 TASK_LIST_URL = reverse("task_manager:task-list")
 USER_CREATE_URL = reverse("task_manager:user-create")
 
@@ -55,4 +59,8 @@ class AuthorizedUserTests(TestCase):
 
     def test_tag_create_forbidden(self) -> None:
         response = self.client.get(TAG_CREATE_URL)
-        self.assertEqual(response.status_code, HTTP_403_OK)
+        self.assertEqual(response.status_code, HTTP_403_FORBIDDEN)
+
+    def test_tag_update_forbidden(self) -> None:
+        response = self.client.get(TAG_UPDATE_URL)
+        self.assertEqual(response.status_code, HTTP_403_FORBIDDEN)
