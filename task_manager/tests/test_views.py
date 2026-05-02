@@ -5,7 +5,10 @@ from django.contrib.auth import get_user_model
 from task_manager.models import Tag, Task
 
 
+User = get_user_model()
+
 HTTP_200_OK = 200
+HTTP_302_FOUND = 302
 HTTP_403_FORBIDDEN = 403
 
 TAG_LIST_URL = reverse("task_manager:tag-list")
@@ -33,16 +36,23 @@ class UnauthorizedTests(TestCase):
         response = self.client.get(TASK_LIST_URL)
         self.assertNotEqual(response.status_code, HTTP_200_OK)
 
-    def test_register_user(self) -> None:
+    def test_register_user_and_is_logged_in(self) -> None:
         data = {
             "username": "testuser",
-            "password1": "testpass",
-            "password2": "testpass",
+            "password1": "testpass1234",
+            "password2": "testpass1234",
         }
+        response = self.client.post(USER_CREATE_URL, data=data)
 
-        self.client.post(USER_CREATE_URL, data=data)
-        user = get_user_model().objects.get(username=data["username"])
+        self.assertEqual(response.status_code, HTTP_302_FOUND)
+        self.assertRedirects(response, TASK_LIST_URL)
+
+        self.assertTrue(User.objects.filter(username=data["username"]).exists())
+        user = User.objects.get(username=data["username"])
+
         self.assertTrue(user.check_password(data["password1"]))
+        self.assertIn("_auth_user_id", self.client.session)
+        self.assertEqual(int(self.client.session["_auth_user_id"]), user.pk)
 
 
 class AuthorizedUserTests(TestCase):
