@@ -19,6 +19,7 @@ TAG_DELETE_URL = reverse(
     kwargs={"slug": "test_tag"}
 )
 TASK_LIST_URL = reverse("task_manager:task-list")
+TASK_CREATE_URL = reverse("task_manager:task-create")
 USER_CREATE_URL = reverse("task_manager:user-create")
 
 
@@ -96,3 +97,17 @@ class AuthorizedUserTests(TestCase):
         task = Task.objects.first()
 
         self.assertTrue(task.completed)
+
+    def test_task_create(self) -> None:
+        tag = Tag.objects.create(name="test")
+        data = {
+            "content": "Test",
+            "completed": True,
+            "tags": (tag.id, )
+        }
+
+        self.client.post(TASK_CREATE_URL, data=data)
+        task = Task.objects.first()
+
+        self.assertEqual(task.user, self.user)
+        self.assertIn(tag, task.tags.all())
