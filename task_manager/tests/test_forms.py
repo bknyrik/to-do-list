@@ -4,7 +4,11 @@ from django.test import TestCase
 from django.contrib.auth import get_user_model
 
 from task_manager.models import Tag
-from task_manager.forms import TagForm, TaskForm
+from task_manager.forms import (
+    TagForm,
+    TaskForm,
+    UserRegistrationForm,
+)
 
 
 class FormTests(TestCase):
@@ -35,3 +39,23 @@ class FormTests(TestCase):
         self.assertEqual(form.cleaned_data["content"], data["content"])
         self.assertEqual(form.cleaned_data["deadline"], data["deadline"])
         self.assertEqual(form.cleaned_data["completed"], data["completed"])
+
+    def test_user_registration_form_is_valid(self) -> None:
+        data = {
+            "username": "testuser",
+            "first_name": "Test first",
+            "last_name": "Test last",
+            "email": "test@test.test",
+            "password1": "testpass1234",
+            "password2": "testpass1234",
+        }
+
+        form = UserRegistrationForm(data=data)
+
+        self.assertTrue(form.is_valid())
+        self.assertEqual(form.data["username"], data["username"])
+        self.assertEqual(form.data["first_name"], data["first_name"])
+        self.assertEqual(form.data["last_name"], data["last_name"])
+        self.assertEqual(form.data["email"], data["email"])
+        self.assertEqual(form.data["password1"], data["password1"])
+        self.assertEqual(form.data["password2"], data["password2"])
