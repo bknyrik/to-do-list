@@ -14,6 +14,10 @@ TAG_UPDATE_URL = reverse(
     "task_manager:tag-update",
     kwargs={"slug": "test_tag"}
 )
+TAG_DELETE_URL = reverse(
+    "task_manager:tag-delete",
+    kwargs={"slug": "test_tag"}
+)
 TASK_LIST_URL = reverse("task_manager:task-list")
 USER_CREATE_URL = reverse("task_manager:user-create")
 
@@ -63,4 +67,8 @@ class AuthorizedUserTests(TestCase):
 
     def test_tag_update_forbidden(self) -> None:
         response = self.client.get(TAG_UPDATE_URL)
+        self.assertEqual(response.status_code, HTTP_403_FORBIDDEN)
+
+    def test_tag_delete_forbidden(self) -> None:
+        response = self.client.get(TAG_DELETE_URL)
         self.assertEqual(response.status_code, HTTP_403_FORBIDDEN)
