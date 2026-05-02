@@ -152,3 +152,8 @@ class AuthorizedUserTests(TestCase):
         response = self.client.get(USER_LIST_URL)
         self.assertEqual(response.status_code, HTTP_403_FORBIDDEN)
         self.assertTemplateUsed(response, "403.html")
+
+    def test_user_create_forbidden(self) -> None:
+        response = self.client.get(USER_CREATE_URL)
+        self.assertEqual(response.status_code, HTTP_403_FORBIDDEN)
+        self.assertTemplateUsed(response, "403.html")
