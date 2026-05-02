@@ -33,7 +33,7 @@ class TaskForm(forms.ModelForm):
 
     class Meta:
         model = Task
-        fields = ("content", "deadline", "tags")
+        fields = ("content", "deadline", "completed", "tags")
 
     def clean_deadline(self) -> datetime:
         deadline = self.cleaned_data.get("deadline")
