@@ -269,3 +269,21 @@ class AuthorizedAdminTests(TestCase):
         self.assertTrue(user.check_password(data["password1"]))
         self.assertEqual(response.status_code, HTTP_302_FOUND)
         self.assertRedirects(response, TASK_LIST_URL)
+
+    def test_update_user(self) -> None:
+        data = {
+            "username": "testuser",
+            "first_name": "Test first",
+            "last_name": "Test last",
+            "is_superuser": True,
+            "is_staff": False,
+        }
+        response = self.client.post(USER_UPDATE_URL, data=data)
+        user = User.objects.get(username=data["username"])
+        print(user.slug)
+        self.assertEqual(user.is_superuser, data["is_superuser"])
+        self.assertEqual(user.is_staff, data["is_staff"])
+        self.assertEqual(user.first_name, data["first_name"])
+        self.assertEqual(user.last_name, data["last_name"])
+        self.assertEqual(response.status_code, HTTP_302_FOUND)
+        self.assertRedirects(response, USER_UPDATE_URL)
