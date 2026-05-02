@@ -240,3 +240,11 @@ class AuthorizedAdminTests(TestCase):
 
         self.assertEqual(tag.name, data["name"])
         self.assertRedirects(response, TAG_LIST_URL)
+
+    def test_tag_update(self) -> None:
+        data = {"name": "testtag"}
+        response = self.client.post(TAG_UPDATE_URL, data=data)
+        tag = Tag.objects.first()
+
+        self.assertEqual(tag.name, data["name"])
+        self.assertRedirects(response, TAG_LIST_URL)
