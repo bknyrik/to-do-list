@@ -2,6 +2,8 @@ from django.test import TestCase, Client
 from django.urls import reverse
 from django.contrib.auth import get_user_model
 
+from task_manager.models import Tag
+
 
 HTTP_200_OK = 200
 HTTP_403_OK = 403
@@ -43,6 +45,13 @@ class AuthorizedUserTests(TestCase):
             password="testpass"
         )
         self.client.force_login(user=self.user)
+
+    def test_tag_list(self) -> None:
+        tag = Tag.objects.create(name="test_tag")
+        response = self.client.get(TAG_LIST_URL)
+
+        self.assertEqual(response.status_code, HTTP_200_OK)
+        self.assertIn(tag, response.context["tag_list"])
 
     def test_tag_create_forbidden(self) -> None:
         response = self.client.get(TAG_CREATE_URL)
