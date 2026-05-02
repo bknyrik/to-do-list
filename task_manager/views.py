@@ -81,7 +81,11 @@ class TaskListView(mixins.LoginRequiredMixin, generic.ListView):
             task.completed = not task.completed
             task.save()
 
-        return HttpResponseRedirect(reverse("task_manager:task-list"), *args, **kwargs)
+        return HttpResponseRedirect(
+            reverse("task_manager:task-list", query=self.request.GET),
+            *args,
+            **kwargs
+        )
 
 
 class TaskCreateView(mixins.LoginRequiredMixin, generic.CreateView):
