@@ -253,3 +253,19 @@ class AuthorizedAdminTests(TestCase):
         response = self.client.post(TAG_DELETE_URL)
         self.assertEqual(Tag.objects.count(), 0)
         self.assertRedirects(response, TAG_LIST_URL)
+
+    def test_create_user(self) -> None:
+        data = {
+            "username": "testuser2",
+            "password1": "testpass1234",
+            "password2": "testpass1234",
+            "is_staff": True,
+        }
+        response = self.client.post(USER_CREATE_URL, data=data)
+        user = User.objects.get(username=data["username"])
+
+        self.assertEqual(user.username, data["username"])
+        self.assertEqual(user.is_staff, data["is_staff"])
+        self.assertTrue(user.check_password(data["password1"]))
+        self.assertEqual(response.status_code, HTTP_302_FOUND)
+        self.assertRedirects(response, TASK_LIST_URL)
