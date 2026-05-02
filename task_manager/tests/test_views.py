@@ -216,3 +216,27 @@ class AuthorizedUserTests(TestCase):
         self.assertEqual(response.status_code, HTTP_403_FORBIDDEN)
         self.assertEqual(User.objects.count(), 2)
         self.assertTemplateUsed(response, "403.html")
+
+
+class AuthorizedAdminTests(TestCase):
+
+    def setUp(self) -> None:
+        self.client = Client()
+        self.admin_user = User.objects.create_superuser(
+            username="testadmin",
+            password="admin12345"
+        )
+        self.user = User.objects.create_user(
+            username="testuser",
+            password="password12345"
+        )
+        self.tag = Tag.objects.create(name="test_tag")
+        self.client.force_login(user=self.admin_user)
+
+    def test_tag_create(self) -> None:
+        data = {"name": "test_tag_2"}
+        response = self.client.post(TAG_CREATE_URL, data=data)
+        tag = Tag.objects.get(name=data["name"])
+
+        self.assertEqual(tag.name, data["name"])
+        self.assertRedirects(response, TAG_LIST_URL)
