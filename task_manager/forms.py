@@ -37,9 +37,9 @@ class TaskForm(forms.ModelForm):
 
     def clean_deadline(self) -> datetime:
         deadline = self.cleaned_data.get("deadline")
-        created_at = self.instance.created_at
+        created_at = self.instance.created_at or datetime.now()
 
-        if deadline and created_at and created_at > deadline:
+        if deadline is not None and created_at > deadline:
             raise ValidationError("Deadline mustn't have past date and time")
 
         return deadline
