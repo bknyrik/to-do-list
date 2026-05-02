@@ -9,6 +9,7 @@ from task_manager.forms import (
     TaskForm,
     UserRegistrationForm,
     UserCreationForm,
+    UserChangeForm,
 )
 
 
@@ -80,3 +81,16 @@ class FormTests(TestCase):
         self.assertEqual(form.data["is_staff"], data["is_staff"])
         self.assertEqual(form.data["is_superuser"], data["is_superuser"])
         self.assertEqual(form.data["user_permissions"], data["user_permissions"])
+
+    def test_user_change_form_is_valid(self) -> None:
+        data = {
+            "username": "testuser",
+            "first_name": "Test first",
+            "email": "test@test.test",
+        }
+
+        form = UserChangeForm(data=data)
+        print(form.errors)
+        self.assertTrue(form.is_valid())
+        self.assertEqual(form.data["first_name"], data["first_name"])
+        self.assertEqual(form.data["email"], data["email"])
