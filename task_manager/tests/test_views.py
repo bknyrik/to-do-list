@@ -178,3 +178,17 @@ class AuthorizedUserTests(TestCase):
         )
 
         self.assertRedirects(response, UPDATED_USER_UPDATE_URL)
+
+    def test_user_update_another_user_forbidden(self) -> None:
+        user = User.objects.create_user(
+            username="test_user_2",
+            password="testpass12345"
+        )
+        ANOTHER_USER_UPDATE_URL = reverse(
+            "task_manager:user-update",
+            kwargs={"slug": user.slug}
+        )
+        response = self.client.post(ANOTHER_USER_UPDATE_URL)
+
+        self.assertEqual(response.status_code, HTTP_403_FORBIDDEN)
+        self.assertTemplateUsed(response, "403.html")
