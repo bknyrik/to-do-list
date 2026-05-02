@@ -68,6 +68,7 @@ class AuthorizedUserTests(TestCase):
             content="Test content",
             user=self.user
         )
+        self.task.tags.set((self.tag, ))
         self.client.force_login(user=self.user)
 
     def test_tag_list(self) -> None:
@@ -107,15 +108,15 @@ class AuthorizedUserTests(TestCase):
         self.assertRedirects(response, TASK_LIST_URL)
 
     def test_task_create(self) -> None:
-        tag = Tag.objects.create(name="test")
         data = {
             "content": "Test",
             "completed": True,
-            "tags": (tag.id, )
+            "tags": (self.tag.id, )
         }
 
-        self.client.post(TASK_CREATE_URL, data=data)
-        task = Task.objects.first()
+        response = self.client.post(TASK_CREATE_URL, data=data)
+        task = Task.objects.get(content=data["content"])
 
         self.assertEqual(task.user, self.user)
-        self.assertIn(tag, task.tags.all())
+        self.assertIn(self.tag, task.tags.all())
+        self.assertRedirects(response, TASK_LIST_URL)
