@@ -2,7 +2,7 @@ from django.test import TestCase, Client
 from django.urls import reverse
 from django.contrib.auth import get_user_model
 
-from task_manager.models import Tag
+from task_manager.models import Tag, Task
 
 
 HTTP_200_OK = 200
@@ -72,3 +72,15 @@ class AuthorizedUserTests(TestCase):
     def test_tag_delete_forbidden(self) -> None:
         response = self.client.get(TAG_DELETE_URL)
         self.assertEqual(response.status_code, HTTP_403_FORBIDDEN)
+
+    def test_task_list(self) -> None:
+        task = Task.objects.create(
+            content="Test content",
+            completed=True,
+            user=self.user
+        )
+        task.tags.set((Tag.objects.create(name="test_tag").id, ))
+        response = self.client.get(TASK_LIST_URL)
+
+        self.assertEqual(response.status_code, HTTP_200_OK)
+        self.assertIn(task, response.context["task_list"])
