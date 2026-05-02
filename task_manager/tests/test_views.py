@@ -80,14 +80,17 @@ class AuthorizedUserTests(TestCase):
     def test_tag_create_forbidden(self) -> None:
         response = self.client.get(TAG_CREATE_URL)
         self.assertEqual(response.status_code, HTTP_403_FORBIDDEN)
+        self.assertTemplateUsed(response, "403.html")
 
     def test_tag_update_forbidden(self) -> None:
         response = self.client.get(TAG_UPDATE_URL)
         self.assertEqual(response.status_code, HTTP_403_FORBIDDEN)
+        self.assertTemplateUsed(response, "403.html")
 
     def test_tag_delete_forbidden(self) -> None:
         response = self.client.get(TAG_DELETE_URL)
         self.assertEqual(response.status_code, HTTP_403_FORBIDDEN)
+        self.assertTemplateUsed(response, "403.html")
 
     def test_task_list(self) -> None:
         response = self.client.get(TASK_LIST_URL)
