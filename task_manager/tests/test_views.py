@@ -63,6 +63,11 @@ class AuthorizedUserTests(TestCase):
             username="testuser",
             password="testpass"
         )
+        self.tag = Tag.objects.create(name="test_tag")
+        self.task = Task.objects.create(
+            content="Test content",
+            user=self.user
+        )
         self.client.force_login(user=self.user)
 
     def test_tag_list(self) -> None:
@@ -85,28 +90,18 @@ class AuthorizedUserTests(TestCase):
         self.assertEqual(response.status_code, HTTP_403_FORBIDDEN)
 
     def test_task_list(self) -> None:
-        task = Task.objects.create(
-            content="Test content",
-            completed=True,
-            user=self.user
-        )
-        task.tags.set((Tag.objects.create(name="test_tag").id, ))
         response = self.client.get(TASK_LIST_URL)
 
         self.assertEqual(response.status_code, HTTP_200_OK)
-        self.assertIn(task, response.context["task_list"])
+        self.assertIn(self.task, response.context["task_list"])
+        self.assertTemplateUsed(response, "task_manager/task_list.html")
 
     def test_task_list_completed(self) -> None:
-        task = Task.objects.create(
-            content="Test content",
-            user=self.user
-        )
+        response = self.client.post(TASK_LIST_URL, data={"task_pk": self.task.id})
+        test_task = Task.objects.first()
 
-        task.tags.set((Tag.objects.create(name="test_tag").id,))
-        self.client.post(TASK_LIST_URL, data={"task_pk": task.id})
-        task = Task.objects.first()
-
-        self.assertTrue(task.completed)
+        self.assertTrue(test_task.completed)
+        self.assertRedirects(response, TASK_LIST_URL)
 
     def test_task_create(self) -> None:
         tag = Tag.objects.create(name="test")
