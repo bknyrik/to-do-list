@@ -38,7 +38,7 @@ class TagCreateView(
 class TagUpdateView(
     mixins.LoginRequiredMixin,
     mixins.PermissionRequiredMixin,
-    generic.CreateView
+    generic.UpdateView
 ):
     model = Tag
     form_class = TagForm
@@ -51,7 +51,7 @@ class TagUpdateView(
 class TagDeleteView(
     mixins.LoginRequiredMixin,
     mixins.PermissionRequiredMixin,
-    generic.CreateView
+    generic.DeleteView
 ):
     model = Tag
     success_url = reverse_lazy("task_manager:tag-list")
