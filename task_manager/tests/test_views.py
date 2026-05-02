@@ -81,11 +81,10 @@ class AuthorizedUserTests(TestCase):
         self.client.force_login(user=self.user)
 
     def test_tag_list(self) -> None:
-        tag = Tag.objects.create(name="test_tag")
         response = self.client.get(TAG_LIST_URL)
 
         self.assertEqual(response.status_code, HTTP_200_OK)
-        self.assertIn(tag, response.context["tag_list"])
+        self.assertIn(self.tag, response.context["tag_list"])
 
     def test_tag_create_forbidden(self) -> None:
         response = self.client.get(TAG_CREATE_URL)
