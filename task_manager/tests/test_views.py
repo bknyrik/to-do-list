@@ -32,6 +32,7 @@ TASK_DELETE_URL = reverse(
     kwargs={"slug": "test-content"}
 )
 USER_CREATE_URL = reverse("task_manager:user-create")
+USER_LIST_URL = reverse("task_manager:user-list")
 
 
 class UnauthorizedTests(TestCase):
@@ -146,3 +147,8 @@ class AuthorizedUserTests(TestCase):
         response = self.client.post(TASK_DELETE_URL)
         self.assertEqual(Task.objects.count(), 0)
         self.assertRedirects(response, TASK_LIST_URL)
+
+    def test_user_list_forbidden(self) -> None:
+        response = self.client.get(USER_LIST_URL)
+        self.assertEqual(response.status_code, HTTP_403_FORBIDDEN)
+        self.assertTemplateUsed(response, "403.html")
