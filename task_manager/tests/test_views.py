@@ -254,6 +254,12 @@ class AuthorizedAdminTests(TestCase):
         self.assertEqual(Tag.objects.count(), 0)
         self.assertRedirects(response, TAG_LIST_URL)
 
+    def test_user_list(self) -> None:
+        response = self.client.get(USER_LIST_URL)
+        self.assertEqual(response.status_code, HTTP_200_OK)
+        self.assertIn(self.admin_user, response.context["user_list"])
+        self.assertIn(self.user, response.context["user_list"])
+
     def test_create_another_user(self) -> None:
         data = {
             "username": "testuser2",
