@@ -1,7 +1,10 @@
+from datetime import datetime
+
 from django.test import TestCase
+from django.contrib.auth import get_user_model
 
 from task_manager.models import Tag
-from task_manager.forms import TagForm
+from task_manager.forms import TagForm, TaskForm
 
 
 class FormTests(TestCase):
@@ -12,3 +15,23 @@ class FormTests(TestCase):
 
         self.assertTrue(form.is_valid())
         self.assertEqual(form.cleaned_data["name"], data["name"])
+
+    def test_task_form_is_valid(self) -> None:
+        tag = Tag.objects.create(name="test_tag")
+        user = get_user_model().objects.create_user(
+            username="testuser",
+            password="testpass"
+        )
+        data = {
+            "content": "Test content",
+            "deadline": datetime.now(),
+            "completed": True,
+            "tags": (tag.id, )
+        }
+        form = TaskForm(data=data)
+        form.instance.user = user
+
+        self.assertTrue(form.is_valid())
+        self.assertEqual(form.cleaned_data["content"], data["content"])
+        self.assertEqual(form.cleaned_data["deadline"], data["deadline"])
+        self.assertEqual(form.cleaned_data["completed"], data["completed"])
