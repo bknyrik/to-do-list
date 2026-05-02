@@ -8,6 +8,7 @@ from task_manager.forms import (
     TagForm,
     TaskForm,
     UserRegistrationForm,
+    UserCreationForm,
 )
 
 
@@ -59,3 +60,23 @@ class FormTests(TestCase):
         self.assertEqual(form.data["email"], data["email"])
         self.assertEqual(form.data["password1"], data["password1"])
         self.assertEqual(form.data["password2"], data["password2"])
+
+    def test_user_creation_form_is_valid(self) -> None:
+        data = {
+            "username": "testuser",
+            "first_name": "Test first",
+            "last_name": "Test last",
+            "email": "test@test.test",
+            "password1": "passuser",
+            "password2": "passuser",
+            "is_superuser": True,
+            "is_staff": True,
+            "user_permissions": (1, 2)
+        }
+
+        form = UserCreationForm(data=data)
+
+        self.assertTrue(form.is_valid())
+        self.assertEqual(form.data["is_staff"], data["is_staff"])
+        self.assertEqual(form.data["is_superuser"], data["is_superuser"])
+        self.assertEqual(form.data["user_permissions"], data["user_permissions"])
