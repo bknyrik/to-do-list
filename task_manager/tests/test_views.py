@@ -37,6 +37,10 @@ USER_UPDATE_URL = reverse(
     "task_manager:user-update",
     kwargs={"slug": "testuser"}
 )
+USER_DELETE_URL = reverse(
+    "task_manager:user-delete",
+    kwargs={"slug": "testuser"}
+)
 
 
 class UnauthorizedTests(TestCase):
@@ -192,3 +196,8 @@ class AuthorizedUserTests(TestCase):
 
         self.assertEqual(response.status_code, HTTP_403_FORBIDDEN)
         self.assertTemplateUsed(response, "403.html")
+
+    def test_user_delete_current_user(self) -> None:
+        response = self.client.post(USER_DELETE_URL)
+        self.assertEqual(User.objects.count(), 0)
+        self.assertEqual(response.status_code, HTTP_302_FOUND)
