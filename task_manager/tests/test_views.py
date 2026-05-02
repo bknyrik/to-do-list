@@ -33,6 +33,10 @@ TASK_DELETE_URL = reverse(
 )
 USER_CREATE_URL = reverse("task_manager:user-create")
 USER_LIST_URL = reverse("task_manager:user-list")
+USER_UPDATE_URL = reverse(
+    "task_manager:user-update",
+    kwargs={"slug": "testuser"}
+)
 
 
 class UnauthorizedTests(TestCase):
@@ -156,3 +160,21 @@ class AuthorizedUserTests(TestCase):
         response = self.client.get(USER_CREATE_URL)
         self.assertEqual(response.status_code, HTTP_403_FORBIDDEN)
         self.assertTemplateUsed(response, "403.html")
+
+    def test_user_update_current_user(self) -> None:
+        data = {
+            "username": "test_user_1",
+            "email": "user1@test.test",
+        }
+        response = self.client.post(USER_UPDATE_URL, data=data)
+        user = User.objects.get(username=data["username"])
+
+        self.assertEqual(user.username, data["username"])
+        self.assertEqual(user.email, data["email"])
+
+        UPDATED_USER_UPDATE_URL = reverse(
+            "task_manager:user-update",
+            kwargs={"slug": user.slug}
+        )
+
+        self.assertRedirects(response, UPDATED_USER_UPDATE_URL)
