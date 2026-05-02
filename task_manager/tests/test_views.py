@@ -23,6 +23,10 @@ TAG_DELETE_URL = reverse(
 )
 TASK_LIST_URL = reverse("task_manager:task-list")
 TASK_CREATE_URL = reverse("task_manager:task-create")
+TASK_UPDATE_URL = reverse(
+    "task_manager:task-update",
+    kwargs={"slug": "test-content"}
+)
 USER_CREATE_URL = reverse("task_manager:user-create")
 
 
@@ -119,4 +123,17 @@ class AuthorizedUserTests(TestCase):
 
         self.assertEqual(task.user, self.user)
         self.assertIn(self.tag, task.tags.all())
+        self.assertRedirects(response, TASK_LIST_URL)
+
+    def test_task_update(self) -> None:
+        data = {
+            "content": "New test content",
+            "completed": True,
+            "tags": (self.tag.id, )
+        }
+        response = self.client.post(TASK_UPDATE_URL, data=data)
+        task = Task.objects.first()
+
+        self.assertEqual(task.content, data["content"])
+        self.assertEqual(task.completed, data["completed"])
         self.assertRedirects(response, TASK_LIST_URL)
