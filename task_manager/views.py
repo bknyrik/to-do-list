@@ -12,7 +12,7 @@ from task_manager.forms import (
     TaskForm,
     UserRegistrationForm,
     UserCreationForm,
-    StaffChangeForm,
+    UserUpdateForm,
     UserChangeForm
 )
 
@@ -155,7 +155,7 @@ class UserUpdateView(
 
     def get_form_class(self) -> type:
         if self.request.user.is_authenticated and self.request.user.is_staff:
-            return StaffChangeForm
+            return UserUpdateForm
 
         return UserChangeForm
 
