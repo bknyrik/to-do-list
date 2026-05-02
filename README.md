@@ -20,4 +20,9 @@ git clone https://github.com/bknyrik/to-do-list.git
 4. Install all dependencies `pip install -r requirements.txt`;
 5. Apply migrations `python manage.py migrate`;
 6. Run the server `python manage.py runserver`.
+___
+## Usage
+Visit `http://127.0.0.1:8000/` in your browser to use the application. 
 
+And also don't forget to create a superuser:
+```python manage.py createsuperuser```
