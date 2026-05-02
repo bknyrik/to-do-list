@@ -248,3 +248,8 @@ class AuthorizedAdminTests(TestCase):
 
         self.assertEqual(tag.name, data["name"])
         self.assertRedirects(response, TAG_LIST_URL)
+
+    def test_tag_delete(self) -> None:
+        response = self.client.post(TAG_DELETE_URL)
+        self.assertEqual(Tag.objects.count(), 0)
+        self.assertRedirects(response, TAG_LIST_URL)
