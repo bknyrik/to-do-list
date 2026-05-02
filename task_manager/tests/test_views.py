@@ -84,3 +84,15 @@ class AuthorizedUserTests(TestCase):
 
         self.assertEqual(response.status_code, HTTP_200_OK)
         self.assertIn(task, response.context["task_list"])
+
+    def test_task_list_completed(self) -> None:
+        task = Task.objects.create(
+            content="Test content",
+            user=self.user
+        )
+
+        task.tags.set((Tag.objects.create(name="test_tag").id,))
+        self.client.post(TASK_LIST_URL, data={"task_pk": task.id})
+        task = Task.objects.first()
+
+        self.assertTrue(task.completed)
