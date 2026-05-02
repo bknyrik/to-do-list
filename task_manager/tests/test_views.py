@@ -254,7 +254,7 @@ class AuthorizedAdminTests(TestCase):
         self.assertEqual(Tag.objects.count(), 0)
         self.assertRedirects(response, TAG_LIST_URL)
 
-    def test_create_user(self) -> None:
+    def test_create_another_user(self) -> None:
         data = {
             "username": "testuser2",
             "password1": "testpass1234",
@@ -270,7 +270,7 @@ class AuthorizedAdminTests(TestCase):
         self.assertEqual(response.status_code, HTTP_302_FOUND)
         self.assertRedirects(response, TASK_LIST_URL)
 
-    def test_update_user(self) -> None:
+    def test_update_another_user(self) -> None:
         data = {
             "username": "testuser",
             "first_name": "Test first",
@@ -287,3 +287,9 @@ class AuthorizedAdminTests(TestCase):
         self.assertEqual(user.last_name, data["last_name"])
         self.assertEqual(response.status_code, HTTP_302_FOUND)
         self.assertRedirects(response, USER_UPDATE_URL)
+
+    def test_delete_another_user(self) -> None:
+        response = self.client.post(USER_DELETE_URL)
+        self.assertEqual(User.objects.count(), 1)
+        self.assertEqual(response.status_code, HTTP_302_FOUND)
+        self.assertRedirects(response, TASK_LIST_URL)
