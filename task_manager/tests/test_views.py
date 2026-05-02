@@ -201,3 +201,18 @@ class AuthorizedUserTests(TestCase):
         response = self.client.post(USER_DELETE_URL)
         self.assertEqual(User.objects.count(), 0)
         self.assertEqual(response.status_code, HTTP_302_FOUND)
+
+    def test_user_delete_another_user_forbidden(self) -> None:
+        user = User.objects.create_user(
+            username="test_user_2",
+            password="testpass12345"
+        )
+        ANOTHER_USER_DELETE_URL = reverse(
+            "task_manager:user-delete",
+            kwargs={"slug": user.slug}
+        )
+        response = self.client.post(ANOTHER_USER_DELETE_URL)
+
+        self.assertEqual(response.status_code, HTTP_403_FORBIDDEN)
+        self.assertEqual(User.objects.count(), 2)
+        self.assertTemplateUsed(response, "403.html")
