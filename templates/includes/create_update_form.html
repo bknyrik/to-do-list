@@ -1,0 +1,19 @@
+{% load crispy_forms_filters %}
+{% if h1 %}
+  <h1>{{ h1 }}</h1>
+{% else %}
+  <h1>{{ object|yesno:"Update,Create" }} {{ object_type }}</h1>
+{% endif %}
+<form action="" method="post">
+  {% csrf_token %}
+  {{ form|crispy }}
+  <br>
+  <input class="btn btn-primary" type="submit"
+      {% if not submit_text %}
+         value="{{ object|yesno:"Update,Create" }}"
+      {% else %}
+         value="{{ submit_text }}"
+      {% endif %}
+  >
+  <input class="btn btn-primary" type="reset" value="Clear">
+</form>

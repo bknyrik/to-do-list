@@ -1,0 +1,4 @@
+{% extends "base.html" %}
+{% block content %}
+  {% include "includes/confirm_delete_form.html" with object_type="task" object_name=object.content %}
+{% endblock %}

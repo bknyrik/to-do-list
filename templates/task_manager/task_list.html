@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block content %}
+  <h1>
+    TODO list
+    <a class="btn btn-primary float-end" href="{% url "task_manager:task-create" %}">Add task</a>
+  </h1>
+  {% if task_list %}
+    <ul class="list-group list-group-flush">
+      {% for task in task_list %}
+        <li class="list-group-item">
+          <form action="" method="post">
+            {% csrf_token %}
+            <p class="fw-bold h5">
+              {{ task.content }}
+              <span class="{{ task.completed|yesno:"text-success,text-danger" }}">{{ task.has_done }}</span>
+              <input type="text" name="task_pk" value="{{ task.id }}" hidden>
+              <input class="btn {{ task.completed|yesno:"btn-secondary,btn-success" }} float-end" type="submit"
+                     value="{{ task.completed|yesno:"Undo,Complete" }}">
+            </p>
+          </form>
+          <p>
+            Created: {{ task.created_at }}
+            {% if task.deadline %}
+              <span class="text-danger">Deadline: {{ task.deadline }}</span>
+            {% endif %}
+          </p>
+          <p class="text-secondary h6">
+            Tags: {{ task.tags.all|join:", " }}
+            <a class="text-decoration-none" href="{% url "task_manager:task-update" slug=task.slug %}">Update</a>
+            <a class="text-decoration-none" href="{% url "task_manager:task-delete" slug=task.slug %}">Delete</a>
+          </p>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>There are no any tasks.</p>
+  {% endif %}
+{% endblock %}

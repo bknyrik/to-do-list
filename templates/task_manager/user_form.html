@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+  {% if request.user.is_staff %}
+    {% include "includes/create_update_form.html" with object_type="user" %}
+  {% elif not object %}
+    {% include "includes/create_update_form.html" with h1="Registration" submit_text="Register" %}
+  {% else %}
+    {% include "includes/create_update_form.html" with h1="User info" submit_text="Update" %}
+  {% endif %}
+  {% if object %}
+    <br>
+    <a class="btn btn-primary" href="{% url "password_change" %}">Change password</a>
+    <a class="btn btn-danger" href="{% url "task_manager:user-delete" slug=user.slug %}">Delete</a>
+  {% endif %}
+{% endblock %}
